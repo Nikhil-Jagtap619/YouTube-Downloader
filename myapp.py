@@ -21,32 +21,24 @@ def openlocation():
 #download video funtion
 def downloadVideo():
     choice = qualityChoice.get()
-    url = entryBox.get()
+    error.config(text="url found", fg="green")
+    url = YouTube(str(entryBox.get()))
+    video = url.streams.filter(progressive=True, file_extension="mp4", progressivebar=True).first()
+    video.download(folder_name)
 
-    if len(url)>1:
-        error.config(text="url found", fg="green")
-        yt = YouTube(url)
+    messagebox.showwarning("Alert!", "Download Complete!")
 
-        if choice == qualityChoice[0]:
-            select = yt.streams.filter(progressive=True).first()
-        elif choice == qualityChoice[1]:
-            select = yt.streams.filter(progressive=True, file_extension="mp4").last()
-        elif choice == qualityChoice[2]:
-            select = yt.streams.filter(only_audio=True).first()
-        else:
-            messagebox.showwarning("Warning!","choose your quality")
 
-    #download video 
-    select.download(folder_name)
-    messagebox.showwarning("Download Status","Download Complete!")
         
 
 #set workspace width, height and other components(2) 
 root = Tk()
 root.title("youtube downloader")
-root.geometry("500x460+560+200")
+root.geometry("500x400+560+200")
 root.resizable(width=False, height=False)
 root.columnconfigure(0, weight=1) #sets every component in center
+image_icon = PhotoImage(file="yticon.png")
+root.iconphoto(False, image_icon)
 
 #link paste label
 ytLabel = Label(root, text="Enter your URL here", font=("Helvetica", 14))
